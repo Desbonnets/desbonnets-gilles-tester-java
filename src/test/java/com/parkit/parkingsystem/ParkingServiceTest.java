@@ -89,4 +89,12 @@ public class ParkingServiceTest {
         verify(parkingSpotDAO, times(1)).getNextAvailableSlot(any(ParkingType.class));
     }
 
+    @Test
+    void testGetNextParkingNumberIfAvailableParkingNumberNotFound () {
+        when(parkingSpotDAO.getNextAvailableSlot(any(ParkingType.class))).thenReturn(0);
+
+        assertEquals(null, parkingService.getNextParkingNumberIfAvailable());
+        verify(parkingSpotDAO, times(1)).getNextAvailableSlot(any(ParkingType.class));
+    }
+    
 }

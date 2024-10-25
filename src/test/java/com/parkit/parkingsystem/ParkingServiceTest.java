@@ -96,5 +96,13 @@ public class ParkingServiceTest {
         assertEquals(null, parkingService.getNextParkingNumberIfAvailable());
         verify(parkingSpotDAO, times(1)).getNextAvailableSlot(any(ParkingType.class));
     }
-    
+
+    @Test
+    void testGetNextParkingNumberIfAvailableParkingNumberWrongArgument() {
+        when(inputReaderUtil.readSelection()).thenReturn(3); // 1 pour CAR ou 2 pour BIKE
+
+        assertEquals(null, parkingService.getNextParkingNumberIfAvailable());
+        verify(parkingSpotDAO, times(0)).getNextAvailableSlot(any(ParkingType.class));
+    }
+
 }

@@ -3,6 +3,9 @@ package com.parkit.parkingsystem.service;
 import com.parkit.parkingsystem.constants.Fare;
 import com.parkit.parkingsystem.model.Ticket;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
+
 public class FareCalculatorService {
 
     public void calculateFare(Ticket ticket) {
@@ -26,11 +29,15 @@ public class FareCalculatorService {
 
         switch (ticket.getParkingSpot().getParkingType()){
             case CAR: {
-                ticket.setPrice(duration * Fare.CAR_RATE_PER_HOUR * (discount ? 0.95 : 1));
+                BigDecimal bd = new BigDecimal(duration * Fare.CAR_RATE_PER_HOUR * (discount ? 0.95 : 1));
+                bd = bd.setScale(3, RoundingMode.HALF_UP);
+                ticket.setPrice(bd.doubleValue());
                 break;
             }
             case BIKE: {
-                ticket.setPrice(duration * Fare.BIKE_RATE_PER_HOUR * (discount ? 0.95 : 1));
+                BigDecimal bd = new BigDecimal(duration * Fare.BIKE_RATE_PER_HOUR * (discount ? 0.95 : 1));
+                bd = bd.setScale(3, RoundingMode.HALF_UP);
+                ticket.setPrice(bd.doubleValue());
                 break;
             }
             default: throw new IllegalArgumentException("Unkown Parking Type");

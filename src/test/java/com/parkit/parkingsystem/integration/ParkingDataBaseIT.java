@@ -58,6 +58,11 @@ public class ParkingDataBaseIT {
 
     }
 
+    /**
+     * Tests the process of parking a car. Verifies that a ticket is created and that the parking spot
+     * is marked as unavailable. Additionally, it checks if the vehicle registration number on the ticket
+     * matches the expected one.
+     */
     @Test
     public void testParkingACar(){
         ParkingService parkingService = new ParkingService(inputReaderUtil, parkingSpotDAO, ticketDAO);
@@ -71,13 +76,18 @@ public class ParkingDataBaseIT {
         assertFalse(parkingSpot.isAvailable(), "Le parking doit être marqué comme non disponible");
     }
 
+    /**
+     * Tests the process of a vehicle exiting the parking lot after being parked. Verifies that the
+     * exit time is set correctly and that the fare is calculated based on the parking duration.
+     * The test simulates a one-hour parking time for the vehicle.
+     */
     @Test
     public void testParkingLotExit(){
         testParkingACar();
 
         Ticket ticket = ticketDAO.getTicket(vehicleRegNumber);
         Date inTime = new Date();
-        inTime.setTime( System.currentTimeMillis() - (  60 * 60 * 1000) );
+        inTime.setTime( System.currentTimeMillis() - ( 60 * 60 * 1000)); // Une heure dans le passé
         ticket.setInTime(inTime);
         ticketDAO.saveTicket(ticket);
 
@@ -92,6 +102,11 @@ public class ParkingDataBaseIT {
         assertTrue(ticket.getPrice() > 0, "Le tarif doit être supérieur à 0");
     }
 
+    /**
+     * Tests the process of a recurring user (i.e., a user who has previously parked) exiting the parking lot.
+     * Verifies that a 5% discount is applied to the fare based on the duration of parking.
+     * The test simulates a one-hour parking for the returning user and checks that the correct discounted fare is calculated.
+     */
     @Test
     public void testParkingLotExitRecurringUser() {
 
@@ -108,8 +123,8 @@ public class ParkingDataBaseIT {
         ticket = ticketDAO.getTicket(vehicleRegNumber);
 
         // Vérifier que le prix a été calculé avec la remise de 5%
-        BigDecimal bd = new BigDecimal(Fare.CAR_RATE_PER_HOUR * 0.95);
-        bd = bd.setScale(3, RoundingMode.HALF_EVEN);
+        BigDecimal bd = new BigDecimal(Fare.CAR_RATE_PER_HOUR * Fare.DISCOUNT);
+        bd = bd.setScale(3, RoundingMode.HALF_EVEN);// Arrondis 3 chiffres après la virgule
         double expectedPrice = bd.doubleValue();
         double actualPrice = ticket.getPrice();
 

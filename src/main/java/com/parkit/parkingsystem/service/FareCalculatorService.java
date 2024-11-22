@@ -29,14 +29,14 @@ public class FareCalculatorService {
 
         switch (ticket.getParkingSpot().getParkingType()){
             case CAR: {
-                BigDecimal bd = new BigDecimal(duration * Fare.CAR_RATE_PER_HOUR * (discount ? 0.95 : 1));
-                bd = bd.setScale(3, RoundingMode.HALF_EVEN);
+                BigDecimal bd = new BigDecimal(duration * Fare.CAR_RATE_PER_HOUR * (discount ? Fare.DISCOUNT : 1));
+                bd = bd.setScale(3, RoundingMode.HALF_EVEN);// Arrondis 3 chiffres après la virgule
                 ticket.setPrice(bd.doubleValue());
                 break;
             }
             case BIKE: {
-                BigDecimal bd = new BigDecimal(duration * Fare.BIKE_RATE_PER_HOUR * (discount ? 0.95 : 1));
-                bd = bd.setScale(3, RoundingMode.HALF_EVEN);
+                BigDecimal bd = new BigDecimal(duration * Fare.BIKE_RATE_PER_HOUR * (discount ? Fare.DISCOUNT : 1));
+                bd = bd.setScale(3, RoundingMode.HALF_EVEN);// Arrondis 3 chiffres après la virgule
                 ticket.setPrice(bd.doubleValue());
                 break;
             }

@@ -128,6 +128,10 @@ public class FareCalculatorServiceTest {
         assertEquals( (24 * Fare.CAR_RATE_PER_HOUR) , ticket.getPrice());
     }
 
+    /**
+     * Tests the fare calculation for a car with a parking time less than 30 minutes.
+     * Verifies that the fare is free (0) for such a short parking time.
+     */
     @Test
     public void calculateFareCarWithLessThan30minutesParkingTimeDescription(){
         Date inTime = new Date();
@@ -143,6 +147,10 @@ public class FareCalculatorServiceTest {
         assertEquals(0 , ticket.getPrice());
     }
 
+    /**
+     * Tests the fare calculation for a bike with a parking time less than 30 minutes.
+     * Verifies that the fare is free (0) for such a short parking time.
+     */
     @Test
     public void calculateFareBikeWithLessThan30minutesParkingTimeDescription(){
         Date inTime = new Date();
@@ -158,10 +166,15 @@ public class FareCalculatorServiceTest {
         assertEquals(0 , ticket.getPrice());
     }
 
+    /**
+     * Tests the fare calculation for a car with a discount applied.
+     * The parking duration is one hour, and a 5% discount is applied.
+     * Verifies that the fare is correctly calculated after the discount.
+     */
     @Test
     public void calculateFareCarWithDiscountDescription(){
         Date inTime = new Date();
-        inTime.setTime( System.currentTimeMillis() - ( 60 * 60 * 1000));
+        inTime.setTime( System.currentTimeMillis() - ( 60 * 60 * 1000));// 1 hour parking time
         Date outTime = new Date();
         ParkingSpot parkingSpot = new ParkingSpot(1, ParkingType.CAR,false);
 
@@ -170,15 +183,20 @@ public class FareCalculatorServiceTest {
         ticket.setParkingSpot(parkingSpot);
         fareCalculatorService.calculateFare(ticket, true);
 
-        BigDecimal bd = new BigDecimal(Fare.CAR_RATE_PER_HOUR * 0.95);
-        bd = bd.setScale(3, RoundingMode.HALF_EVEN);
+        BigDecimal bd = new BigDecimal(Fare.CAR_RATE_PER_HOUR * Fare.DISCOUNT);
+        bd = bd.setScale(3, RoundingMode.HALF_EVEN);// Arrondis 3 chiffres après la virgule
         assertEquals(bd.doubleValue() , ticket.getPrice());
     }
 
+    /**
+     * Tests the fare calculation for a bike with a discount applied.
+     * The parking duration is one hour, and a 5% discount is applied.
+     * Verifies that the fare is correctly calculated after the discount.
+     */
     @Test
     public void calculateFareBikeWithDiscountDescription(){
         Date inTime = new Date();
-        inTime.setTime( System.currentTimeMillis() - ( 60 * 60 * 1000));
+        inTime.setTime( System.currentTimeMillis() - ( 60 * 60 * 1000));// 1 hour parking time
         Date outTime = new Date();
         ParkingSpot parkingSpot = new ParkingSpot(1, ParkingType.BIKE,false);
 
@@ -187,7 +205,7 @@ public class FareCalculatorServiceTest {
         ticket.setParkingSpot(parkingSpot);
         fareCalculatorService.calculateFare(ticket, true);
 
-        assertEquals(Fare.BIKE_RATE_PER_HOUR * 0.95, ticket.getPrice());
+        assertEquals(Fare.BIKE_RATE_PER_HOUR * Fare.DISCOUNT, ticket.getPrice());
     }
 
 }

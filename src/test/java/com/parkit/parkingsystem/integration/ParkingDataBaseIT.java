@@ -109,7 +109,7 @@ public class ParkingDataBaseIT {
 
         // Vérifier que le prix a été calculé avec la remise de 5%
         BigDecimal bd = new BigDecimal(Fare.CAR_RATE_PER_HOUR * 0.95);
-        bd = bd.setScale(3, RoundingMode.HALF_UP);
+        bd = bd.setScale(2, RoundingMode.HALF_EVEN);
         double expectedPrice = bd.doubleValue();
         double actualPrice = ticket.getPrice();
 

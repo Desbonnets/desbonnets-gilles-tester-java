@@ -30,13 +30,13 @@ public class FareCalculatorService {
         switch (ticket.getParkingSpot().getParkingType()){
             case CAR: {
                 BigDecimal bd = new BigDecimal(duration * Fare.CAR_RATE_PER_HOUR * (discount ? 0.95 : 1));
-                bd = bd.setScale(3, RoundingMode.HALF_UP);
+                bd = bd.setScale(2, RoundingMode.HALF_EVEN);
                 ticket.setPrice(bd.doubleValue());
                 break;
             }
             case BIKE: {
                 BigDecimal bd = new BigDecimal(duration * Fare.BIKE_RATE_PER_HOUR * (discount ? 0.95 : 1));
-                bd = bd.setScale(3, RoundingMode.HALF_UP);
+                bd = bd.setScale(2, RoundingMode.HALF_EVEN);
                 ticket.setPrice(bd.doubleValue());
                 break;
             }

@@ -48,7 +48,7 @@ public class ParkingServiceTest {
             lenient().when(ticketDAO.getNbTicket("NOT_DISCOUNT")).thenReturn(0);
 
             lenient().when(parkingSpotDAO.updateParking(any(ParkingSpot.class))).thenReturn(true);
-            lenient().when(parkingSpotDAO.getNextAvailableSlot(any(ParkingType.class))).thenReturn(1);
+            lenient().when(parkingSpotDAO.getNextAvailableSlot(any(ParkingType.class))).thenReturn(2);
 
             parkingService = new ParkingService(inputReaderUtil, parkingSpotDAO, ticketDAO);
         } catch (Exception e) {
@@ -90,7 +90,7 @@ public class ParkingServiceTest {
     @Test
     void testGetNextParkingNumberIfAvailable () {
 
-        assertEquals(1, parkingService.getNextParkingNumberIfAvailable().getId());
+        assertEquals(2, parkingService.getNextParkingNumberIfAvailable().getId());
         verify(parkingSpotDAO, times(1)).getNextAvailableSlot(any(ParkingType.class));
     }
 

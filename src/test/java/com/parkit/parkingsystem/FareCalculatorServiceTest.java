@@ -110,7 +110,7 @@ public class FareCalculatorServiceTest {
         ticket.setParkingSpot(parkingSpot);
         fareCalculatorService.calculateFare(ticket);
         BigDecimal bd = new BigDecimal(0.75 * Fare.CAR_RATE_PER_HOUR);
-        bd = bd.setScale(2, RoundingMode.HALF_EVEN);
+        bd = bd.setScale(3, RoundingMode.HALF_EVEN);
         assertEquals( bd.doubleValue() , ticket.getPrice());
     }
 
@@ -171,7 +171,7 @@ public class FareCalculatorServiceTest {
         fareCalculatorService.calculateFare(ticket, true);
 
         BigDecimal bd = new BigDecimal(Fare.CAR_RATE_PER_HOUR * 0.95);
-        bd = bd.setScale(2, RoundingMode.HALF_EVEN);
+        bd = bd.setScale(3, RoundingMode.HALF_EVEN);
         assertEquals(bd.doubleValue() , ticket.getPrice());
     }
 
